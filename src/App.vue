@@ -1,30 +1,41 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import FormPlayer from './components/FormPlayer.vue';
+import TheGame from './components/TheGame.vue';
+import { Player } from './models/Player';
+import { ref } from 'vue';
+import { GameState } from './models/GameState';
+import Board from './components/Board.vue';
+
+const state = ref<GameState>({
+    showGame: false,
+});
+
+const players = ref<Player[]>([]);
+
+const addPlayer = (text:string, team:string) => {
+    players.value.push(new Player(text,team))
+}
+
+const showGame = () => {
+    if(players.value.length === 2) {
+      state.value.showGame = !state.value.showGame
+        
+    } else{
+      alert("Spelet kunde ej starta!")
+    }
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <h1>Let's play Tic Tac Toe!</h1>  
+  <TheGame/>
+  <FormPlayer @add="addPlayer"/>
+  <button @click="showGame" :disabled="players.length !== 2">Kör</button>
+  <Board :player="players" v-if="state.showGame"/>
+  <p v-if="state.showGame">Spelet är igång!</p>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
+
 </style>
