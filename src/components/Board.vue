@@ -6,24 +6,24 @@ interface propsPlayers {
     player: Player[];
 }
 defineProps<propsPlayers>();
+
+const cells = ref(Array(9).fill(""));
+
+const makeMove = () => {
+
+}
 </script>
 
 <template>
-<p>Spelare 1:{{player[0].name}}</p>
-<p>Spelare 2:{{ player[1].name }}</p>
+<p><b>Spelare 1:</b> {{player[0].name}} ({{ player[0].team }}) </p>
+<p><b>Spelare 2:</b> {{ player[1].name }} ({{ player[1].team }})</p>
 <div id="board">
-    <div class="cell" id="1"></div>
-    <div class="cell" id="2"></div>
-    <div class="cell" id="3"></div>
-    <div class="cell" id="4"></div>
-    <div class="cell" id="5"></div>
-    <div class="cell" id="6"></div>
-    <div class="cell" id="7"></div>
-    <div class="cell" id="8"></div>
-    <div class="cell" id="9"></div>
-   
-</div>
-<button>Rensa allt</button>
+    <div class="cell"
+      v-for="(cell, index) in cells" :key="index" @click="makeMove(index)">
+      {{ cell }}
+    </div>
+  </div>
+<button>Starta nytt spel</button>
 </template>
 
 <style scoped>
@@ -31,7 +31,7 @@ defineProps<propsPlayers>();
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 2px;
+    gap: 5px;
     margin:20px;
 }
 .cell{

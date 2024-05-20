@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import FormPlayer from './components/FormPlayer.vue';
-import TheGame from './components/TheGame.vue';
 import { Player } from './models/Player';
 import { ref } from 'vue';
 import { GameState } from './models/GameState';
@@ -32,7 +31,6 @@ const showGame = () => {
   <FormPlayer @add="addPlayer"/>
   <button @click="showGame" :disabled="players.length !== 2">Kör</button>
   <Board :player="players" v-if="state.showGame"/>
-  <p v-if="state.showGame">Spelet är igång!</p>
 </template>
 
 <style scoped>
