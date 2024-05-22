@@ -42,6 +42,7 @@ input{
     margin: 2px;
     width: 250px; 
     height: 38px;
+    border: black solid 2px;
     border-radius: 10px;
     font-size: 20px;
 }

@@ -29,7 +29,8 @@ const showGame = () => {
   <h1>Let's play Tic Tac Toe!</h1>  
   <TheGame/>
   <FormPlayer @add="addPlayer"/>
-  <button @click="showGame" :disabled="players.length !== 2">Kör</button>
+  <button @click="showGame" :disabled="players.length !== 2">Spela</button>
+  
   <Board :player="players" v-if="state.showGame"/>
 </template>
 
