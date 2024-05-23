@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { GameState } from '../models/GameState';
 
 const userInput = ref("");
 const team = ref("");
@@ -22,7 +23,7 @@ const handleSubmit = () => {
 </script>
 
 <template>
-    <p>Fyll i två spelare och välj ett lag</p>
+    <p>Fyll i två spelare och välj varsitt lag</p>
     <form  @submit.prevent="handleSubmit">
     <input type="text" v-model="userInput" placeholder="Ange spelare">
     <select v-model="team">

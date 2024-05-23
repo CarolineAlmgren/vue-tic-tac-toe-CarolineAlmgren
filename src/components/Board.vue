@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { Player } from '../models/Player';
 
 interface propsPlayers {
@@ -9,74 +9,85 @@ const props = defineProps<propsPlayers>();
 
 const boxes = ref(Array(9).fill(""));
 
-//hanterar speldragen
-const currentPlayer = ref<Player>(props.player[0])
+const currentPlayer = ref<Player>(props.player[0]);
 
-const makeMove = (i:number) => {
-    if (boxes.value[i] !== '') {
-    return;
-  }
-  
-  boxes.value[i] = currentPlayer?.value?.team;
-  if(currentPlayer.value === props.player[0]) {
-    currentPlayer.value = props.player[1];
-  }else currentPlayer.value = props.player[0] 
+const gameOver = ref(false)
 
+const theWinner = ref<string | null>(null);
+
+const makeMove = (i: number) => {
+    if (boxes.value[i] !== '' || gameOver.value) {
+        return;
+    }
+    boxes.value[i] = currentPlayer.value?.team;
+
+    const winner = winnerFunction(boxes.value);
+    if (winner) {
+      theWinner.value = winner;
+      gameOver.value = true;
+        return;
+    }
+    currentPlayer.value = currentPlayer.value === props.player[0] ? props.player[1] : props.player[0];
 };
 
-//hanterar vinnardragen
-const winnerFunction = (box:(string[])| null[]): string | null => {
-const winnerCombinations =[[0,1,2], [3,4,5], [6,7,8], [1,4,7], [0,3,6],[2,5,8], [0,4,8],[2,4,6]]
-for (let i = 0; i < winnerCombinations.length; i++) {
-    const [a,b,c] = winnerCombinations[i];
-    if(box[a] && box[a] === box[b] && box[a]=== box[c]) {
-        return box[a]
-    }
-}
- return null;
+const winnerFunction = (box: string[]): string | null => {
+    const winnerCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]];
 
-}
-const theWinner = computed(() => winnerFunction(boxes.value.flat()))
+    for (let i = 0; i < winnerCombinations.length; i++) {
+        const [a, b, c] = winnerCombinations[i];
+        if (box[a] && box[a] === box[b] && box[a] === box[c]) {
+        return box[a];
+        }
+    }
+    return null;
+};
 
 const itsAtie = () => {
-   return boxes.value.every((box) => box !=="") && !theWinner.value;
-}
+    return boxes.value.every((box) => box !== "") && !theWinner.value;
+};
 
-//återställer spelplanen
 const newGame = () => {
-    for (let i = 0; i < boxes.value.length; i++) {
-        boxes.value[i] = '';
-    }
-}
+    boxes.value = Array(9).fill("");
+    currentPlayer.value = props.player[0];
+    gameOver.value = false;
+    theWinner.value = null;
+};
+
 </script>
 
 <template>
-<p><b>Spelare 1:</b> {{player[0].name}} ({{ player[0].team }}) </p>
-<p><b>Spelare 2:</b> {{ player[1].name }} ({{ player[1].team }})</p>
-<h3>Nu spelar: {{ currentPlayer?.name }}</h3>
-<h2 v-if ="theWinner">Vinnaren är: {{ theWinner }} !</h2>
-<p v-if="itsAtie()">Oavgjort</p>
+<p><b>Spelare 1:</b> {{ props.player[0].name }} ({{ props.player[0].team }}) </p>
+<p><b>Spelare 2:</b> {{ props.player[1].name }} ({{ props.player[1].team }})</p>
+<h3 v-if="!gameOver">Nu spelar: {{ currentPlayer?.name }}</h3>
+<h2 v-if="theWinner">Grattis {{ currentPlayer.name }} du vann!</h2>
+<h2 v-if="itsAtie()">Oavgjort!</h2>
 <div id="board">
     <div class="box" v-for="(box, index) in boxes" :key="index" @click="makeMove(index)">
       {{ box }}
     </div>
-  </div>
-<button @click="newGame()">Nytt spel</button>
+</div>
+<button @click="newGame">Nytt spel</button>
 </template>
 
 <style scoped>
-#board{
-    display:grid;
+#board {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 5px;
-    margin:20px;
+    margin: 20px;
 }
-.box{
+.box {
     height: 150px;
     width: 150px;
     border: black solid 2px;
     cursor: pointer;
     font-size: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
