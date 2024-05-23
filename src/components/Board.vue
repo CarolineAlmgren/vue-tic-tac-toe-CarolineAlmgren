@@ -30,7 +30,7 @@ const makeMove = (i: number) => {
     currentPlayer.value = currentPlayer.value === props.player[0] ? props.player[1] : props.player[0];
 };
 
-const winnerFunction = (box: string[]): string | null => {
+const winnerFunction = (board: string[]): string | null => {
     const winnerCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
         [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -38,8 +38,8 @@ const winnerFunction = (box: string[]): string | null => {
 
     for (let i = 0; i < winnerCombinations.length; i++) {
         const [a, b, c] = winnerCombinations[i];
-        if (box[a] && box[a] === box[b] && box[a] === box[c]) {
-        return box[a];
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
         }
     }
     return null;
@@ -62,7 +62,7 @@ const newGame = () => {
 <p><b>Spelare 1:</b> {{ props.player[0].name }} ({{ props.player[0].team }}) </p>
 <p><b>Spelare 2:</b> {{ props.player[1].name }} ({{ props.player[1].team }})</p>
 <h3 v-if="!gameOver">Nu spelar: {{ currentPlayer?.name }}</h3>
-<h2 v-if="theWinner">Grattis {{ currentPlayer.name }} du vann!</h2>
+<h2 v-if="theWinner">Grattis {{ currentPlayer.name }}, du vann!</h2>
 <h2 v-if="itsAtie()">Oavgjort!</h2>
 <div id="board">
     <div class="box" v-for="(box, index) in boxes" :key="index" @click="makeMove(index)">
