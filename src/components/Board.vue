@@ -59,9 +59,10 @@ const newGame = () => {
 </script>
 
 <template>
+  
 <h3 v-if="!gameOver">Nu spelar: {{ currentPlayer?.name }}</h3>
-<h2 v-if="theWinner">Grattis {{ currentPlayer.name }}, du vann!</h2>
-<h2 v-if="itsAtie()">Oavgjort!</h2>
+<h3 v-if="theWinner">Grattis {{ currentPlayer.name }}, du vann!</h3>
+<h3 v-if="itsAtie()">Oavgjort!</h3>
 <div id="board">
     <div class="box" v-for="(box, index) in boxes" :key="index" @click="makeMove(index)">
       {{ box }}
@@ -75,15 +76,15 @@ const newGame = () => {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 5px;
+    gap: 5px 5px;
     margin: 20px;
 }
 .box {
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 100px;
     border: black solid 2px;
     cursor: pointer;
-    font-size: 90px;
+    font-size: 80px;
     display: flex;
     align-items: center;
     justify-content: center;

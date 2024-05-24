@@ -27,21 +27,44 @@ const showGame = () => {
 </script>
 
 <template>
-  <h1>Let's play Tic Tac Toe!</h1>  
-  <TheGame/>
-  <FormPlayer @add="addPlayer"/>
- 
-  <button @click="showGame" :disabled="players.length !== 2">Spela</button>
-  <ul>
-    <li v-for="player in players" :key="player.name">
-    {{ player.name }} - {{ player.team }}
-    </li>
-  </ul>
-  <Board :player="players" v-if="state.showGame"/>
+  <div class="container">
+    <div class="form-section" v-if="!state.showGame">
+    <h1>Let's play Tic Tac Toe!</h1>  
+    <FormPlayer @add="addPlayer"/>
+    <button @click="showGame" :disabled="players.length !== 2">Spela</button>
+    </div>
+    <ul>
+      <li v-for="player in players" :key="player.name">
+      {{ player.name }} - {{ player.team }}
+      </li>
+    </ul>
+    <div class="board-section">
+      <Board :player="players" v-if="state.showGame"/>
+    </div>
+  
+  </div>
 </template>
+
 <style scoped>
-li {
-  list-style-type: none;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.form-section {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+button {
+    font-size: 16px;
+}
 </style>
+
