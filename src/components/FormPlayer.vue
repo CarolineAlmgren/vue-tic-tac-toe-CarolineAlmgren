@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { GameState } from '../models/GameState';
+
 
 const userInput = ref("");
-const team = ref("");
+//const team = ref("");
 const error = ref("");
 
 const emit = defineEmits<{
-    (e: "add", text:string, team:string):void;
+    (e: "add", text:string):void;
 }>();
 
 const handleSubmit = () => {
     if(userInput.value !== ""){
-        emit("add", userInput.value, team.value);
+        emit("add", userInput.value);
         userInput.value="";
         error.value="";
         console.log(userInput.value)
@@ -23,14 +23,10 @@ const handleSubmit = () => {
 </script>
 
 <template>
-    <p>Fyll i två spelare och välj varsitt lag</p>
+    <p>Fyll i två spelare</p>
     <form  @submit.prevent="handleSubmit">
     <input type="text" v-model="userInput" placeholder="Ange spelare">
-    <select v-model="team">
-      <option value="" disabled>Välj lag</option>
-      <option value="X">X</option>
-      <option value="O">O</option>
-    </select>
+   
     <button type="submit">Lägg till</button>
    
 </form>

@@ -59,8 +59,6 @@ const newGame = () => {
 </script>
 
 <template>
-<p><b>Spelare 1:</b> {{ props.player[0].name }} ({{ props.player[0].team }}) </p>
-<p><b>Spelare 2:</b> {{ props.player[1].name }} ({{ props.player[1].team }})</p>
 <h3 v-if="!gameOver">Nu spelar: {{ currentPlayer?.name }}</h3>
 <h2 v-if="theWinner">Grattis {{ currentPlayer.name }}, du vann!</h2>
 <h2 v-if="itsAtie()">Oavgjort!</h2>

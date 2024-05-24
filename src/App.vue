@@ -11,8 +11,9 @@ const state = ref<GameState>({
 
 const players = ref<Player[]>([]);
 
-const addPlayer = (text:string, team:string) => {
-    players.value.push(new Player(text,team))
+const addPlayer = (text:string) => {
+  const teams = players.value.length === 0 ? "X" : "O";
+    players.value.push(new Player(text,teams))
 }
 
 const showGame = () => {
@@ -29,12 +30,18 @@ const showGame = () => {
   <h1>Let's play Tic Tac Toe!</h1>  
   <TheGame/>
   <FormPlayer @add="addPlayer"/>
+ 
   <button @click="showGame" :disabled="players.length !== 2">Spela</button>
-  
+  <ul>
+    <li v-for="player in players" :key="player.name">
+    {{ player.name }} - {{ player.team }}
+    </li>
+  </ul>
   <Board :player="players" v-if="state.showGame"/>
 </template>
-
 <style scoped>
-
+li {
+  list-style-type: none;
+}
 
 </style>
