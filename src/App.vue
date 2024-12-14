@@ -1,30 +1,70 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import FormPlayer from './components/FormPlayer.vue';
+import { Player } from './models/Player';
+import { ref } from 'vue';
+import { GameState } from './models/GameState';
+import Board from './components/Board.vue';
+
+const state = ref<GameState>({
+    showGame: false,
+});
+
+const players = ref<Player[]>([]);
+
+const addPlayer = (text:string) => {
+  const teams = players.value.length === 0 ? "X" : "O";
+    players.value.push(new Player(text,teams))
+}
+
+const showGame = () => {
+    if(players.value.length === 2) {
+      state.value.showGame = !state.value.showGame
+        
+    } else{
+      alert("Spelet kunde ej starta!")
+    }
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container">
+    <div class="form-section" v-if="!state.showGame">
+    <h1>Let's play Tic Tac Toe!</h1>  
+    <FormPlayer @add="addPlayer"/>
+    <button @click="showGame" :disabled="players.length !== 2">Spela</button>
+    </div>
+    <ul>
+      <li v-for="player in players" :key="player.name">
+      {{ player.name }} - {{ player.team }}
+      </li>
+    </ul>
+    <div class="board-section">
+      <Board :player="players" v-if="state.showGame"/>
+    </div>
+  
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.form-section {
+    text-align: center;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+button {
+    font-size: 16px;
 }
 </style>
+
